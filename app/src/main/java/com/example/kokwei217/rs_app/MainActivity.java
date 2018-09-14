@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 item.setChecked(true);
-                drawerLayout.closeDrawers();
+                
 
                 switch (item.getItemId()) {
 
