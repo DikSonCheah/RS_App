@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "604361061940",
+    "firebase_url": "https://rs-app-database.firebaseio.com",
+    "project_id": "rs-app-database",
+    "storage_bucket": "rs-app-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604361061940:android:1f7e4da0e5bf585a",
+        "android_client_info": {
+          "package_name": "com.example.kokwei217.rs_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604361061940-pl5icue8qhsh4r6hen2nvdlj62h858fg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7rOD-t7baPQMLpe8MpD7dtfjBqPM_k7k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
