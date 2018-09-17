@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         createAccount_TV.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
-        
+
         username_ET.addTextChangedListener(textWatcher);
         password_ET.addTextChangedListener(textWatcher);
         checkForEmptyFields();

@@ -103,7 +103,7 @@ public class MotorFragment extends Fragment {
                     key = R.drawable.digital_servo;
                     break;
                 case "Micro Servo Motor SG90":
-                    key = R.drawable.push_button;
+                    key = R.drawable.servo;
                     break;
                 default:
                     key = R.drawable.no_image;
