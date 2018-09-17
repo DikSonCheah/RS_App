@@ -10,9 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class CartAdapter extends ArrayAdapter<CartItem> {
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference ref;
+    private String uid;
+
     public CartAdapter(Context context, ArrayList<CartItem> cartItems) {
         super(context, 0, cartItems);
 
@@ -21,6 +29,10 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        uid = FirebaseAuth.getInstance().getUid();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        ref = firebaseDatabase.getReference("User Requests/" + uid);
+
         // Get the data item for this position
         final CartItem cartItem = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -44,8 +56,10 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
                 int position = (Integer) view.getTag();
                 // Access the row position here to get the correct data item
                 CartItem taggedItem = getItem(position);
+                ref.child(taggedItem.getName()).removeValue();
                 // Do what you want here...
                 remove(taggedItem);
+
 
 
             }

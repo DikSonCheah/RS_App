@@ -80,7 +80,7 @@
                 android:id="@+id/Haveanaccount_txt"
                 android:layout_width="281dp"
                 android:layout_height="wrap_content"
-                android:text="Have an account?"
+                android:text="Have an account? Log in."
                 android:layout_gravity="center"
                 android:textStyle="bold" />
 

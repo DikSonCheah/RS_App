@@ -20,7 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity" />
+        <activity
+            android:name=".ItemImageActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CartActivity" />
     </application>
 
 </manifest>

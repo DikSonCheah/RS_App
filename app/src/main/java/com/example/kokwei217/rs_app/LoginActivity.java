@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar_Login;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -72,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccount_TV.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        username_ET.setText("kokwei217@hotmail.com");
+        username_ET.setText("kokwei217@gmail.com");
         password_ET.setText("xopalx217");
         username_ET.addTextChangedListener(textWatcher);
         password_ET.addTextChangedListener(textWatcher);
@@ -104,10 +106,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                progressBar_Login.setVisibility(View.GONE);
                 progressDialog.dismiss();
                 if (task.isSuccessful()) {
-                    Intent main = new Intent(getApplicationContext(), MainActivity.class);
+                    firebaseUser = firebaseAuth.getCurrentUser();
+                    if (firebaseUser.isEmailVerified()) {
+
+                        Intent main = new Intent(getApplicationContext(), MainActivity.class);
 //                    removes previous activity so that when user press back it doesnt loop back into login
-                    main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(main);
+                        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(main);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Verify your email to log in", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -126,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (firebaseAuth.getCurrentUser() != null && firebaseAuth.getCurrentUser().isEmailVerified()) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }

@@ -2,13 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_all"
     tools:context="com.example.kokwei217.rs_app.AllFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:id="@+id/item_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="all"
-        android:gravity="center"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

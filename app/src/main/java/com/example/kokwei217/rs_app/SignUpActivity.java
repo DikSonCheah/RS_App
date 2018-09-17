@@ -1,9 +1,11 @@
 package com.example.kokwei217.rs_app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -17,10 +19,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
 
     TextInputLayout LayoutUsername_Signup;
     EditText Username_SignUp;
@@ -84,14 +88,38 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (task.isSuccessful()) {
 
-                    Intent main = new Intent(getApplicationContext(),MainActivity.class);
-                    //removes previous activity so that when user press back it doesnt loop back into login
-                    main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(main);
-                    Toast.makeText(getApplicationContext(), "Welcome!", Toast.LENGTH_SHORT).show();
+                    firebaseUser = firebaseAuth.getCurrentUser();
+                    firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful()) {
+                                //if sending the email verification is successful open the alert dialog
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                                builder.setTitle("Verification")
+                                        .setMessage("A verification email has been sent to your email, please verify email in order to login")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                                                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(loginIntent);
+                                            }
+
+                                        });
+                                builder.show();
 
 
-                }else{
+                            } else {
+                                //if fail to send email verification get the error message
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                } else {
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(getApplicationContext(), "This email is already registered", Toast.LENGTH_SHORT).show();
 
@@ -106,14 +134,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.Signup_btn:
                 RegisterUser();
                 break;
 
 
             case R.id.Haveanaccount_txt:
-                Intent Login = new Intent(this,LoginActivity.class);
+                Intent Login = new Intent(this, LoginActivity.class);
                 Login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(Login);
                 break;

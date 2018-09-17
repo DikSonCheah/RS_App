@@ -13,6 +13,8 @@ public class PageAdapter extends FragmentPagerAdapter {
         this.numOfTabs = numOfTabs;
     }
 
+
+
     @Override
     public Fragment getItem(int position) {
         switch (position){
@@ -41,4 +43,5 @@ public class PageAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return numOfTabs;
     }
+
 }

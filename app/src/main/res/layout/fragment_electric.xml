@@ -5,9 +5,16 @@
     tools:context="com.example.kokwei217.rs_app.ElectricFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/item_list_electric"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="electric" />
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/electric_ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </FrameLayout>

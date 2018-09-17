@@ -5,15 +5,21 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,15 +37,16 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    EditText searchBar_ET;
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
     private TabItem tabAll;
     private TabItem tabElectric;
     private TabItem tabMotor;
     private TabItem tabSensors;
     private TabItem tabMicro;
-    private PageAdapter pageAdapter;
+    public static PageAdapter pageAdapter;
 
 
     @Override
@@ -70,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                tabLayout.setScrollPosition(position, 0f, true);
+                viewPager.setCurrentItem(position);
 
             }
 
@@ -84,6 +94,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        //setting up the search bars
+        searchBar_ET = findViewById(R.id.SearchBar_ET);
+
+        //Set what happends to edit text layout when its focused
+        searchBar_ET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(searchBar_ET.hasFocus()){
+                    searchBar_ET.setHint("Search RS Bank");
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+                }
+            }
+        });
+
+        //Set what happens when the keyboard buttons are pressed for the edittext
+        searchBar_ET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                {
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                        //implement searching method here
+                        Toast.makeText(MainActivity.this, "searching", Toast.LENGTH_SHORT).show();
+                        return true;
+
+                    }else{
+
+                    }
+                }
+                return false;
+            }
+        });
 
 
         //setting up the drawerlayout
@@ -106,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 item.setChecked(true);
-                
-
                 switch (item.getItemId()) {
 
                     case R.id.Signout_mainactivity:
@@ -134,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
 
+            case R.id.menu_cart:
+                Intent cartActivity = new Intent(this, CartActivity.class);
+                startActivity(cartActivity);
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -152,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
             return;
+        } else if (tabLayout.getSelectedTabPosition() != 0) {
+            viewPager.setCurrentItem(0);
         } else {
             super.onBackPressed();
         }
